@@ -13,7 +13,7 @@ Formulas for:
 
 # Q&A
 ### Debouncing [ ]
-### 6 7 8 ports (ask) [ ]
+### 6 7 8 ports [ ]
 ### Hsync/Vsync [ ]
 ### Demo for Our lord and saviour [ ]
 ### Documentation [ ]
