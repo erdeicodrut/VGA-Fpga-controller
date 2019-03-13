@@ -41,3 +41,5 @@ Note: must decide k and n (n > k)
 ### all other ports [ ]
 ### Hsync/Vsync [ ]
 ### Documentation [ ]
+### Change image switch/buttons [ ]
+### Do we change colors in an image or can we just make every form different color [ ]
