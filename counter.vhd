@@ -4,7 +4,7 @@ use ieee.std_logic_unsigned.all;
 use ieee.std_logic_arith.all;
 
 entity counter is
-	generic	(nr_bits: integer);
+	generic	(nr_bits: integer := 4);
 	port(clock: in std_logic;		  
 	reset: in std_logic;
 	Q: inout std_logic_vector (nr_bits - 1 downto 0));

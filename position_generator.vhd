@@ -18,6 +18,7 @@ signal pixel_clock, resetX, inter: std_logic;
 
 component freq_divider is
 	port(clk_in : in std_logic;
+	resetDivider: in std_logic;
 	clk_out : out std_logic);
 end component ;
 
@@ -36,7 +37,7 @@ component comp_egal is
 end component ;
 
 begin
-	DIVIDER: freq_divider port map (clock, pixel_clock);
+	DIVIDER: freq_divider port map (clock, V_Sync, pixel_clock);
 	COUNT_X: counter generic map (10) port map (pixel_clock, resetX, X);
 	COMPARE_X: comp_egal generic map(10) port map (X, "1010000000", H_Sync);
 	COUNT_Y: counter generic map (9) port map (H_Sync, V_Sync, Y);
