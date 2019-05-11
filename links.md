@@ -1,4 +1,8 @@
 https://www.digikey.com/eewiki/pages/viewpage.action?pageId=15925278
+https://reference.digilentinc.com/reference/programmable-logic/nexys-4-ddr/reference-manual
+
+
+
 
 https://www.robot-r-us.com/downloads/digilent-product-specifications/62-xupv2puserguide/download.html
 
