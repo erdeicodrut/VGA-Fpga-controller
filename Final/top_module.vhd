@@ -56,13 +56,16 @@ component vga_controller is
 	column: out integer := 0);
 end component ;					 
 
+
+--TODO replace offsetCounter with offsetCalculator
 component offsetCounter is
 	generic(
-	numberRange: Integer
+		numberRange: Integer
 	);
-	port(			   
-	plus: in std_logic;	
-	offset: inout integer
+	port(			   	   
+		enable: in std_logic;
+		plus: in std_logic;
+		offset: inout integer range 0 to numberRange - 1 := 0
 	);
 end component;
 
@@ -111,13 +114,16 @@ DIVIDE: freq_divider port map (fpga_clock, '0', pixel_clock);
 COUNT: counter_for_integers generic map (max_image) port map(image, image_number);
 
 DEBOUNCE: DU port map (fpga_clock, imgBtn, btnLeft, btnRight, btnUp, btnDown, image, left, right, up, down);
-						   					 										 							  
-oxp: offsetCounter generic map(640) port map(right, offsetXPlus); 
-oxm: offsetCounter generic map(640) port map(left, offsetXMinus); 
-oym: offsetCounter generic map(480) port map(up, offsetYMinus);
-oyp: offsetCounter generic map(480) port map(down, offsetYPlus);
+
+--TODO delete all instances of offsetCounter after implementation of offsetCalculator is done
+--oxp: offsetCounter generic map(640) port map(right, offsetXPlus); 
+--oxm: offsetCounter generic map(640) port map(left, offsetXMinus); 
+--oym: offsetCounter generic map(480) port map(up, offsetYMinus);
+--oyp: offsetCounter generic map(480) port map(down, offsetYPlus);
 
 POSITION: vga_controller port map (pixel_clock, H_Sync, V_Sync, display_enable, row, column);
+
+--TODO replace next 2 lines with instance of offsetCalculator -> add component to top module
 
 x <= offsetXPlus - offsetXMinus;
 y <= offsetYPlus - offsetYMinus;

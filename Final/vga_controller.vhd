@@ -6,27 +6,26 @@ use ieee.std_logic_arith.all;
 entity vga_controller is
 	port(
 	pixel_clock: in std_logic;
-	--reset_controller: in std_logic;
 	h_sync: out std_logic := '1';
 	v_sync: out std_logic := '1';		   
 	display_enable: out std_logic := '1';
-	row: out integer := 0;
-	column: out integer := 0);
+	row: out integer range 0 to 639:= 0;
+	column: out integer range 0 to 639:= 0);
 end vga_controller;
 
 architecture vga_architecture of vga_controller is
 
-signal h_display: integer := 640; --nr of pixel on a row of display
-signal h_front_porch: integer := 16; --nr of pixel clocks for front porch of horizontal sync
-signal h_back_porch: integer := 48; --nr of pixel clocks for back porch of horizontal sync
-signal h_sync_pulse: integer := 96; --nr of pixel clocks for which horizontal sync is 0	
+constant h_display: integer := 640; --nr of pixel on a row of display
+constant h_front_porch: integer := 16; --nr of pixel clocks for front porch of horizontal sync
+constant h_back_porch: integer := 48; --nr of pixel clocks for back porch of horizontal sync
+constant h_sync_pulse: integer := 96; --nr of pixel clocks for which horizontal sync is 0	
 
-signal v_display: integer := 480; --nr of rows of diplay
-signal v_front_porch: integer := 10; -- nr of rows for front porch of vertical sync
-signal v_back_porch: integer := 33; --nr of rows for back porch of vertical sync
-signal v_sync_pulse: integer := 2; --nr of rows for which vertical sync is 0
-	
-signal v_sync_clock: std_logic := '0';
+constant v_display: integer := 480; --nr of rows of diplay
+constant v_front_porch: integer := 10; -- nr of rows for front porch of vertical sync
+constant v_back_porch: integer := 33; --nr of rows for back porch of vertical sync
+constant v_sync_pulse: integer := 2; --nr of rows for which vertical sync is 0
+constant h_total_period: integer := h_front_porch + h_display + h_sync_pulse + h_back_porch; --total pixels clock for horizontal sync
+constant v_total_period: integer := v_front_porch + v_display + v_sync_pulse + v_back_porch; --total rows for vertical sync
 	
 component counter_for_integers is
 	generic(max_value: integer);
@@ -35,11 +34,9 @@ component counter_for_integers is
 	count: inout integer);
 end component;
 
-constant h_total_period: integer := h_front_porch + h_display + h_sync_pulse + h_back_porch; --total pixels clock for horizontal sync
-constant v_total_period: integer := v_front_porch + v_display + v_sync_pulse + v_back_porch; --total rows for vertical sync
-
 signal h_count: integer range 0 to h_total_period - 1 := 0; --current column
 signal v_count: integer range 0 to v_total_period - 1 := 0; --current row
+signal v_sync_clock: std_logic := '0';
 		
 	
 begin													
