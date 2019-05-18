@@ -12,7 +12,7 @@ entity positionCalculator is
 	(						   					   				 	 
 		tickPlus: in std_logic;
 		tickMinus: in std_logic;
-		pos: out Integer
+		pos: inout Integer
 	);
 		
 end positionCalculator;
@@ -30,23 +30,35 @@ component offsetCounter is
 	);
 end component;											
 						   				 
-signal xMinus: integer := 0;
-signal xPlus: integer := 0;
+signal posMinus: integer := 0;
+signal posPlus: integer := 0;
 				   				  
-signal enablePlus: std_logic := '0';
-signal enableMinus: std_logic := '0';  
+signal enablePlus: std_logic := '1';
+signal enableMinus: std_logic := '1'; 
+
+CONSTANT OFFSET : INTEGER := 130; 
 
 begin
 																											 
-	minus: offsetCounter generic map(maxRes) port map(enableMinus, tickMinus, xMinus);
-	plus: offsetCounter generic map(maxRes) port map(enablePlus, tickPlus, xPlus);
+	minus: offsetCounter generic map(maxRes) port map(enableMinus, tickMinus, posMinus);
+	plus: offsetCounter generic map(maxRes) port map(enablePlus, tickPlus, posPlus);
+								  
+	pos <= posPlus - posMinus;
 	
-	process(xMinus, xPlus)
-	begin			
-		--TODO think of position 
-		if (xPlus < 0) then
-			
-		end if;
+	process(posMinus, posPlus)
+	begin						  
+		if (pos >  maxRes - 130) then 
+			enablePlus <= '0';
+		else
+			enablePlus <= '1';
+		end if;				  
+		
+		if (pos < 0) then 
+			enableMinus <= '0';
+		else
+			enableMinus <= '1';
+		end if;				  
+		
 		
 	end process;
 	

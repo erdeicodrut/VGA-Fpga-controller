@@ -13,6 +13,10 @@ entity top_module is
 	btnUp: in std_logic;
 	btnDown: in std_logic;
 	
+	RIn : in std_logic_vector (3 downto 0);
+	BIn: in std_logic_vector (3 downto 0);
+	GIn: in std_logic_vector (3 downto 0);
+	
 	H_Sync: out std_logic;
 	V_Sync: out std_logic;
 	R: out std_logic_vector (3 downto 0);
@@ -47,8 +51,7 @@ end component;
 
 component vga_controller is
 	port(
-	pixel_clock: in std_logic;
-	--reset_controller: in std_logic;
+	pixel_clock: in std_logic;			  
 	h_sync: out std_logic := '1';
 	v_sync: out std_logic := '1';		   
 	display_enable: out std_logic := '1';
@@ -56,18 +59,19 @@ component vga_controller is
 	column: out integer := 0);
 end component ;					 
 
-
---TODO replace offsetCounter with offsetCalculator
-component offsetCounter is
-	generic(
-		numberRange: Integer
+component positionCalculator is 
+	generic
+	(
+		maxRes: Integer
 	);
-	port(			   	   
-		enable: in std_logic;
-		plus: in std_logic;
-		offset: inout integer range 0 to numberRange - 1 := 0
+	port 
+	(						   					   				 	 
+		tickPlus: in std_logic;
+		tickMinus: in std_logic;
+		pos: inout Integer
 	);
-end component;
+		
+end component ;
 
 component image_generator is 
 	port(
@@ -78,6 +82,10 @@ component image_generator is
 	
 	x_coordinate: in integer;
 	y_coordinate: in integer;
+	
+	Rin: in std_logic_vector (3 downto 0);
+	Gin: in std_logic_vector (3 downto 0);
+	Bin: in std_logic_vector (3 downto 0);
 	
 	R: out std_logic_vector (3 downto 0);
 	G: out std_logic_vector (3 downto 0);
@@ -115,18 +123,10 @@ COUNT: counter_for_integers generic map (max_image) port map(image, image_number
 
 DEBOUNCE: DU port map (fpga_clock, imgBtn, btnLeft, btnRight, btnUp, btnDown, image, left, right, up, down);
 
---TODO delete all instances of offsetCounter after implementation of offsetCalculator is done
---oxp: offsetCounter generic map(640) port map(right, offsetXPlus); 
---oxm: offsetCounter generic map(640) port map(left, offsetXMinus); 
---oym: offsetCounter generic map(480) port map(up, offsetYMinus);
---oyp: offsetCounter generic map(480) port map(down, offsetYPlus);
-
 POSITION: vga_controller port map (pixel_clock, H_Sync, V_Sync, display_enable, row, column);
 
---TODO replace next 2 lines with instance of offsetCalculator -> add component to top module
-
-x <= offsetXPlus - offsetXMinus;
-y <= offsetYPlus - offsetYMinus;
+X_AXIS: positionCalculator generic map (640) port map (right, left, x);
+Y_AXIS: positionCalculator generic map (480) port map (up, down, y);
 
 IMG: image_generator port map (
 display_enable,
@@ -134,6 +134,7 @@ row, column,
 image_number,
 x,
 y,
+Rin, Gin, Bin,
 R, G, B
 );
 end arh;
