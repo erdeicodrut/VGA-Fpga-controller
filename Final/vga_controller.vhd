@@ -22,7 +22,7 @@ constant h_sync_pulse: integer := 96; --nr of pixel clocks for which horizontal 
 
 constant v_display: integer := 480; --nr of rows of diplay
 constant v_front_porch: integer := 10; -- nr of rows for front porch of vertical sync
-constant v_back_porch: integer := 33; --nr of rows for back porch of vertical sync
+constant v_back_porch: integer := 29; --nr of rows for back porch of vertical sync
 constant v_sync_pulse: integer := 2; --nr of rows for which vertical sync is 0
 constant h_total_period: integer := h_front_porch + h_display + h_sync_pulse + h_back_porch; --total pixels clock for horizontal sync
 constant v_total_period: integer := v_front_porch + v_display + v_sync_pulse + v_back_porch; --total rows for vertical sync

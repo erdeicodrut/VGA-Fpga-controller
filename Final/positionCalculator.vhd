@@ -45,7 +45,7 @@ begin
 								  
 	pos <= posPlus - posMinus;
 	
-	process(posMinus, posPlus)
+	process(pos)
 	begin						  
 		if (pos >  maxRes - 130) then 
 			enablePlus <= '0';

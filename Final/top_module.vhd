@@ -13,7 +13,7 @@ entity top_module is
 	btnUp: in std_logic;
 	btnDown: in std_logic;
 	
-	RIn : in std_logic_vector (3 downto 0);
+	RIn: in std_logic_vector (3 downto 0);
 	BIn: in std_logic_vector (3 downto 0);
 	GIn: in std_logic_vector (3 downto 0);
 	
@@ -126,7 +126,7 @@ DEBOUNCE: DU port map (fpga_clock, imgBtn, btnLeft, btnRight, btnUp, btnDown, im
 POSITION: vga_controller port map (pixel_clock, H_Sync, V_Sync, display_enable, row, column);
 
 X_AXIS: positionCalculator generic map (640) port map (right, left, x);
-Y_AXIS: positionCalculator generic map (480) port map (up, down, y);
+Y_AXIS: positionCalculator generic map (480) port map (down, up, y);
 
 IMG: image_generator port map (
 display_enable,
