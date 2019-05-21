@@ -26,14 +26,16 @@ component debouncer is
 	port (btn_in : in std_logic;
 	clk: in std_logic; --internal clock
 	btn_out: out std_logic);
-end component ;
+end component ;	
+
+constant nr_bistabile: integer := 3;
 
 begin					
 	
-IMAGE_BTN: debouncer generic map (7) port map (imgBtn, clock, image);
-LEFT_BTN: debouncer generic map (7) port map (leftBtn, clock, left);
-RIGHT_BTN: debouncer generic map (7) port map (rightBtn, clock, right);
-UP_BTN: debouncer generic map (7) port map (upBtn, clock, up);
-DOWN_BTN: debouncer generic map (7) port map (downBtn, clock, down);
+IMAGE_BTN: debouncer generic map (nr_bistabile) port map (imgBtn, clock, image);
+LEFT_BTN: debouncer generic map (nr_bistabile) port map (leftBtn, clock, left);
+RIGHT_BTN: debouncer generic map (nr_bistabile) port map (rightBtn, clock, right);
+UP_BTN: debouncer generic map (nr_bistabile) port map (upBtn, clock, up);
+DOWN_BTN: debouncer generic map (nr_bistabile) port map (downBtn, clock, down);
 
 end ARH;

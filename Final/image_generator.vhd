@@ -6,7 +6,7 @@ use ieee.std_logic_arith.all;
 entity image_generator is 
 	port(
 	display_enable: in std_logic;
-	row: in integer;
+	row: integer;
 	column: in integer;
 	image: in integer;
 	
@@ -25,6 +25,8 @@ end image_generator;
 architecture ARH of image_generator is
 																					  
 CONSTANT size: integer := 130; --size of the edge of a square
+constant circle_radius: integer := 50;
+constant circle_displacement: integer := 50;
 
 
 begin
@@ -33,8 +35,9 @@ begin
 		if display_enable = '1' then
 			case image is
 				when 0 =>
-					if (((column - x_coordinate) * (column - x_coordinate)	+ 
-						 (row - y_coordinate) 	 * (row - y_coordinate)) 	< size * size) then 
+					if (((column - (x_coordinate + circle_displacement)) * (column - (x_coordinate + circle_displacement))	+ 
+						 (row - (y_coordinate + circle_displacement)) * (row - (y_coordinate + circle_displacement))) 	< 
+						 circle_radius * circle_radius) then 
 						R <= Rin;
 						G <= Gin;
 						B <= Bin;
@@ -70,7 +73,7 @@ begin
 				end if;
 				
 			when 3 => 
-				if ((column + x_coordinate) mod size = 0) then
+				if ((column - x_coordinate) mod size = 0) then
 					R <= Rin;
 					G <= Gin;
 					B <= Bin;

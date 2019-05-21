@@ -121,7 +121,7 @@ DIVIDE: freq_divider port map (fpga_clock, '0', pixel_clock);
 
 COUNT: counter_for_integers generic map (max_image) port map(image, image_number);
 
-DEBOUNCE: DU port map (fpga_clock, imgBtn, btnLeft, btnRight, btnUp, btnDown, image, left, right, up, down);
+DEBOUNCE: DU port map (pixel_clock, imgBtn, btnLeft, btnRight, btnUp, btnDown, image, left, right, up, down);
 
 POSITION: vga_controller port map (pixel_clock, H_Sync, V_Sync, display_enable, row, column);
 
